@@ -398,3 +398,106 @@ void lept_remove_object_value(lept_value* v, size_t index);
 4. 完成 `lept_copy()` 里的数组和对象的复制部分。
 
 如果你遇到问题，有不理解的地方，或是有建议，都欢迎在评论或 [issue](https://github.com/miloyip/json-tutorial/issues) 中提出，让所有人一起讨论。
+
+
+
+
+下面是10个有代表性的测试用例：
+
+输入字符串为空字符串，即 str = ""。这个测试用例用于检查空字符串的转换是否正确。
+
+输入字符串只包含一个字符，即 str = "A"。这个测试用例用于检查单个字符的转换是否正确。
+
+输入字符串包含多个字符，且字符都是可打印字符，即 str = "Hello"。这个测试用例用于检查可打印字符的转换是否正确。
+
+输入字符串包含多个字符，其中包含不可打印字符，即 str = "Hello\nWorld"。这个测试用例用于检查不可打印字符的转换是否正确。
+
+输入字符串包含多个字符，其中包含数字字符，即 str = "12345"。这个测试用例用于检查数字字符的转换是否正确。
+
+输入字符串包含多个字符，其中包含小写字母字符，即 str = "abcdef"。这个测试用例用于检查小写字母字符的转换是否正确。
+
+输入字符串包含多个字符，其中包含大写字母字符，即 str = "ABCDEF"。这个测试用例用于检查大写字母字符的转换是否正确。
+
+输入字符串包含多个字符，其中包含特殊字符，即 str = "!@#$%^&*()"。这个测试用例用于检查特殊字符的转换是否正确。
+
+输入字符串长度为奇数，即 str = "Hello"。这个测试用例用于检查输入字符串长度为奇数时的转换是否正确。
+
+输入字符串长度为偶数，即 str = "Hello!"。这个测试用例用于检查输入字符串长度为偶数时的转换是否正确。
+
+这些测试用例覆盖了不同的情况，可以验证函数在各种情况下的正确性。
+
+
+
+```
+#include <stdio.h>
+
+int str2hex(const char str[], char hexStr[], unsigned int sLen, unsigned int hLen) {
+    if (hLen < 2 * sLen + 1) {
+        return -1;  // hexStr 缓冲区大小不足，转换失败
+    }
+    
+    for (unsigned int i = 0; i < sLen; i++) {
+        unsigned char ch = str[i];
+        
+        // 转换高位十六进制字符
+        unsigned char highNibble = (ch >> 4) & 0x0F;
+        hexStr[2 * i] = (highNibble <= 9) ? ('0' + highNibble) : ('A' + highNibble - 10);
+        
+        // 转换低位十六进制字符
+        unsigned char lowNibble = ch & 0x0F;
+        hexStr[2 * i + 1] = (lowNibble <= 9) ? ('0' + lowNibble) : ('A' + lowNibble - 10);
+    }
+    
+    hexStr[2 * sLen] = '\0';  // 添加字符串结尾标志
+    
+    return 0;  // 转换成功
+}
+```
+```
+#include <stdio.h>
+
+int str2hex(const char str[], char hexStr[], unsigned int sLen, unsigned int hLen) {
+    if (hLen < 2 * sLen + 1) {
+        return -1;  // hexStr 缓冲区大小不足，转换失败
+    }
+    
+    for (unsigned int i = 0; i < sLen; i++) {
+        unsigned char ch = str[i];
+        
+        // 转换高位十六进制字符
+        unsigned char highNibble = (ch >> 4) & 0x0F;
+        if (highNibble <= 9) {
+            hexStr[2 * i] = '0' + highNibble;
+        } else {
+            hexStr[2 * i] = 'A' + highNibble - 10;
+        }
+        
+        // 转换低位十六进制字符
+        unsigned char lowNibble = ch & 0x0F;
+        if (lowNibble <= 9) {
+            hexStr[2 * i + 1] = '0' + lowNibble;
+        } else {
+            hexStr[2 * i + 1] = 'A' + lowNibble - 10;
+        }
+    }
+    
+    hexStr[2 * sLen] = '\0';  // 添加字符串结尾标志
+    
+    return 0;  // 转换成功
+}
+```
+```
+#include <stdio.h>
+
+int str2hex(const char str[], char hexStr[], unsigned int sLen, unsigned int hLen) {
+    if (hLen < 2 * sLen + 1) {
+        return -1;  // hexStr 缓冲区大小不足，转换失败
+    }
+    
+    for (unsigned int i = 0; i < sLen; i++) {
+        sprintf(hexStr + 2 * i, "%02X", (unsigned char)str[i]);
+    }
+    
+    return 0;  // 转换成功
+}
+```
